@@ -1,18 +1,24 @@
 ﻿import React from 'react';
 import Select from 'react-select';
-import { useField } from 'formik';
-import DatePicker from 'react-datepicker';
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { useField, useFormikContext } from "formik";
+import DatePicker from "react-datepicker";
 
-
-
-export const CustomDatePicker = () => {
-    const [startDate, setStartDate] = useState();
+export const CustomDatePicker = ({ ...props }) => {
+    const { setFieldValue } = useFormikContext();
+    const [field] = useField(props);
     return (
-        <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+        <DatePicker
+            {...field}
+            {...props}
+            selected={(field.value && new Date(field.value)) || null}
+            onChange={val => {
+                setFieldValue(field.name, val);
+            }}
+        />
     );
-}
+};
 
 export function CustomSelect(props) {
     const { name, options } = props;
