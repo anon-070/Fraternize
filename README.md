@@ -1,2 +1,2 @@
 # Fraternize
-Membership management for fraternities or associations of any kind.
+Membership management for fraternities and associations of any kind.
