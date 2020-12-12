@@ -73,7 +73,7 @@ export class MemberDatas extends Component {
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Are you sure you want to delete this item?</ModalHeader>
                     <ModalBody>
-                        MemberData Name: {this.selectedMemberData.name}
+                        Member Name: {this.selectedMemberData.otherNames + " " + this.selectedMemberData.surName}
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" onClick={this.deleteItem}>Delete</Button>{' '}
