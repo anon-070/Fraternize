@@ -21,6 +21,7 @@ export const CustomDatePicker = ({ ...props }) => {
 };
 
 export function CustomSelect(props) {
+    const { setFieldValue } = useFormikContext();
     const { name, options } = props;
     const [field, , helpers] = useField(name);
     return (
@@ -28,7 +29,11 @@ export function CustomSelect(props) {
             options={options}
             name={field.name}
             value={options ? options.find((option) => option.value === field.value) : ''}
-            onChange={(option) => helpers.setValue(option.value)}
+            onChange={(option) => {
+                helpers.setValue(option.value);
+                setFieldValue(field.name, option.value);
+            }
+            }
             onBlur={field.onBlur}
         />
     );

@@ -63,11 +63,11 @@ export class CreateMemberData extends Component {
                                     </div>
 
 
-                                    <div className="form-group">
+                                    {/*<div className="form-group">
                                         <label htmlFor="Titles" className="control-label">Titles</label>
-                                        <Field name="Titles" component={CustomSelect} options={this.state.selectValues.titleIds} isMulti="true" />
+                                        <CustomSelect name="Titles" options={this.state.selectValues.titleIds} isMulti="true" />
                                         <ErrorMessage name="Titles" component="div" />
-                                    </div>
+                                    </div> */}
 
                                     <div className="form-group">
                                         <label htmlFor="SurName" className="control-label">Surname</label>
@@ -84,7 +84,7 @@ export class CreateMemberData extends Component {
                      
                                     <div className="form-group">
                                         <label htmlFor="ProfessionId" className="control-label">Profession</label>
-                                        <Field component={CustomSelect} name="ProfessionId" options={this.state.selectValues.professionIds} />
+                                        <CustomSelect name="ProfessionId" options={this.state.selectValues.professionIds} />
                                         <ErrorMessage name="ProfessionId" component="div" />
                                     </div>
 
@@ -131,14 +131,14 @@ export class CreateMemberData extends Component {
                                         <ErrorMessage name="DateofFullMembership" component="div" />
                                     </div>
 
-                                    <div className="form-group">
+                                    {/*<div className="form-group">
                                         <label htmlFor="Committees" className="control-label">Committees</label>
-                                        <Field component={CustomSelect} name="Committees" name="Committees" options={this.state.selectValues.committeeIds} isMulti="true" />
-                                    </div>
+                                        <CustomSelect name="Committees" name="Committees" options={this.state.selectValues.committeeIds} isMulti="true" />
+                                    </div>*/}
 
                                     <div className="form-group">
                                         <label htmlFor="ChapterId" className="control-label">Chapter</label>
-                                        <Field component={CustomSelect} name="ChapterId" options={this.state.selectValues.chapterIds} />
+                                        <CustomSelect name="ChapterId" options={this.state.selectValues.chapterIds} />
 
                                     </div>
                                     <div className="form-group">

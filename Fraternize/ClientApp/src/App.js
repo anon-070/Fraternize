@@ -60,7 +60,7 @@ export default class App extends Component {
                     <Route path="/committees/create" component={CreateCommittee} />
                     <Route path="/committees" component={Committees} />
 
-                    <Route exact path='/' component={Home} />
+                    <Route exact path='/' component={MemberDatas} />
 
                 </Switch>
 

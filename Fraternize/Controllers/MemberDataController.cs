@@ -78,7 +78,7 @@ namespace Fraternize.Controllers
             var pairs = new List<object>();
             foreach (var item in items.ToList())
             {
-                pairs.Add(new { value = item.Value, label = item.Text });
+                pairs.Add(new { value = Convert.ToInt32(item.Value), label = item.Text });
             }
 
             return pairs;

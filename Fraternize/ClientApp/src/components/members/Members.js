@@ -62,7 +62,7 @@ export class MemberDatas extends Component {
                     </thead>
                     <tbody>
 
-                        {this.state.memberDatas.map(memberData => <tr key={memberData.memberDataId}><td>{memberData.name}</td><td>
+                        {this.state.memberDatas.map(memberData => <tr key={memberData.memberDataId}><td>{memberData.otherNames + " " + memberData.surName}</td><td>
                             <Link className="btn btn-default" to={`/members/edit/${memberData.memberDataId}`}>Edit</Link>
                             <Link className="btn btn-default" to={`/members/details/${memberData.memberDataId}`}>Details</Link>
                             <Button color="danger" onClick={() => this.toggle(memberData.memberDataId)}>Delete</Button>

@@ -2,8 +2,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import axios from 'axios';
 import { Button } from 'reactstrap';
-
-
+import { CustomSelect, CustomDatePicker } from "./CustomWidgets";
 
 
 export class EditMemberData extends Component {
@@ -12,18 +11,23 @@ export class EditMemberData extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            member: {}
-        };
+            member: {}, selectValues: { chapterIds: [], professionIds: [], titleIds: [], committeeIds: [] }
 
-        axios.get(`api/Members/${this.props.match.params.memberId}`)
+        };
+    }
+
+    async componentDidMount() {
+        await axios.get(`api/MemberData/Create`)
+            .then(res => {
+                this.setState({ selectValues: res.data });
+            });
+
+        axios.get(`api/MemberData/${this.props.match.params.memberDataId}`)
             .then(res => {
                 const member = res.data;
                 this.setState({ member });
             })
-
     }
-
-   
 
     render() {
         return (
@@ -35,16 +39,16 @@ export class EditMemberData extends Component {
                     enableReinitialize={true}
                     validate={values => {
                         const errors = {};
-                        if (!values.name) {
-                            errors.name = 'Required';
-                        }
+                        //if (!values.name) {
+                        //    errors.name = 'Required';
+                        //}
                         return errors;
                     }}
 
                     onSubmit={(values, { setSubmitting }) => {
 
-                        axios.put(`api/Members/${this.props.match.params.memberId}`,
-                            values).then( (response) => {
+                        axios.put(`api/MemberData/${this.props.match.params.memberDataId}`,
+                            values).then((response) => {
                                 if (response.status == 200) {
                                     this.props.history.push("/members");
                                 }
@@ -58,100 +62,101 @@ export class EditMemberData extends Component {
                     {({ isSubmitting }) => (
                         <div className="row">
                             <div className="col-md-4">
-                                <form asp-action="Edit">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <input type="hidden" asp-for="MemberDataId" />
+                                <Form>
+                                    <div asp-validation-summary="ModelOnly" className="text-danger"></div>
 
-                                    <div class="form-group">
-                                        <label asp-for="CardNumber" class="control-label"></label>
-                                        <input asp-for="CardNumber" disabled="disabled" class="form-control" />
-                                        <span asp-validation-for="CardNumber" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label asp-for="Titles" class="control-label"></label>
-                                        <select asp-for="Titles" name="Titles" class="form-control" asp-items="ViewBag.Titles" multiple="multiple"></select>
+                                    <div className="form-group">
+                                        <label htmlFor="cardNumber" className="control-label">Card Number</label>
+                                        <Field type="text" name="cardNumber" className="form-control" />
+                                        <ErrorMessage name="cardNumber" component="div" />
                                     </div>
 
 
-                                    <div class="form-group">
-                                        <label asp-for="SurName" class="control-label"></label>
-                                        <input asp-for="SurName" class="form-control" />
-                                        <span asp-validation-for="SurName" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="OtherNames" class="control-label"></label>
-                                        <input asp-for="OtherNames" class="form-control" />
-                                        <span asp-validation-for="OtherNames" class="text-danger"></span>
+                                    {/*<div className="form-group">
+                                        <label htmlFor="titles" className="control-label">Titles</label>
+                                        <CustomSelect name="titles" options={this.state.selectValues.titleIds} isMulti="true" />
+                                        <ErrorMessage name="titles" component="div" />
+                                    </div> */}
+
+                                    <div className="form-group">
+                                        <label htmlFor="surName" className="control-label">Surname</label>
+                                        <Field type="text" name="surName" className="form-control" />
+                                        <ErrorMessage name="surName" component="div" />
                                     </div>
 
-                                    <div class="form-group">
-                                        <label asp-for="MembershipStatus" class="control-label"></label>
-                                        <select asp-for="MembershipStatus" class="form-control" asp-items="Html.GetEnumSelectList<MembershipStatus>()"><option>Select Status</option></select>
-                                        <span asp-validation-for="MembershipStatus" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="ProfessionId" class="control-label"></label>
-                                        <select asp-for="ProfessionId" class="form-control" asp-items="ViewBag.ProfessionId"></select>
-                                        <span asp-validation-for="ProfessionId" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="DateofBirth" class="control-label"></label>
-                                        <input asp-for="DateofBirth" class="form-control datepicker" />
-                                        <span asp-validation-for="DateofBirth" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="DateofWedding" class="control-label"></label>
-                                        <input asp-for="DateofWedding" class="form-control  datepicker" />
-                                        <span asp-validation-for="DateofWedding" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="ResidenceLocation" class="control-label"></label>
-                                        <input asp-for="ResidenceLocation" class="form-control" />
-                                        <span asp-validation-for="ResidenceLocation" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="CellPhoneNumber" class="control-label"></label>
-                                        <input asp-for="CellPhoneNumber" class="form-control" />
-                                        <span asp-validation-for="CellPhoneNumber" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="HomePhoneNumber" class="control-label"></label>
-                                        <input asp-for="HomePhoneNumber" class="form-control" />
-                                        <span asp-validation-for="HomePhoneNumber" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="EmailAddress" class="control-label"></label>
-                                        <input asp-for="EmailAddress" class="form-control" />
-                                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="PostalAddress" class="control-label"></label>
-                                        <input asp-for="PostalAddress" class="form-control" />
-                                        <span asp-validation-for="PostalAddress" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="DateofFullMembership" class="control-label"></label>
-                                        <input asp-for="DateofFullMembership" class="form-control datepicker" />
-                                        <span asp-validation-for="DateofFullMembership" class="text-danger"></span>
+                                    <div className="form-group">
+                                        <label htmlFor="otherNames" className="control-label">Other Names</label>
+                                        <Field type="text" name="otherNames" className="form-control" />
+                                        <ErrorMessage name="otherNames" component="div" />
                                     </div>
 
-                                    <div class="form-group">
-                                        <label asp-for="Ministries" class="control-label"></label>
-                                        <select asp-for="Ministries" name="Ministries" class="form-control" asp-items="ViewBag.Ministries" multiple="multiple"></select>
+
+                                    <div className="form-group">
+                                        <label htmlFor="professionId" className="control-label">Profession</label>
+                                        <CustomSelect name="professionId" options={this.state.selectValues.professionIds} />
+                                        <ErrorMessage name="professionId" component="div" />
                                     </div>
 
-                                    <div class="form-group">
-                                        <label asp-for="CellGroupId" class="control-label"></label>
-                                        <select asp-for="CellGroupId" class="form-control" asp-items="ViewBag.CellGroupId"></select>
-                                        <span asp-validation-for="CellGroupId" class="text-danger"></span>
+                                    <div className="form-group">
+                                        <label htmlFor="dateofBirth" className="control-label">Date Of Birth </label>
+                                        <CustomDatePicker name="dateofBirth" className="form-control" />
+                                        <ErrorMessage name="dateofBirth" component="div" />
                                     </div>
-                                    <div class="form-group">
-                                        <input type="submit" value="Save" class="btn btn-default" />
+
+
+                                    <div className="form-group">
+                                        <label htmlFor="dateofWedding" className="control-label">Date of Wedding </label>
+                                        <CustomDatePicker name="dateofWedding" className="form-control" />
+                                        <ErrorMessage name="dateofWedding" component="div" />
                                     </div>
-                                </form>
+                                    <div className="form-group">
+                                        <label htmlFor="residenceLocation" className="control-label">Residence Location</label>
+                                        <Field type="text" name="residenceLocation" className="form-control" />
+                                        <ErrorMessage name="residenceLocation" component="div" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="cellPhoneNumber" className="control-label">Cell Phone Number</label>
+                                        <Field type="text" name="cellPhoneNumber" className="form-control" />
+                                        <ErrorMessage name="cellPhoneNumber" component="div" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="homePhoneNumber" className="control-label">Home Phone Number</label>
+                                        <Field type="text" name="homePhoneNumber" className="form-control" />
+                                        <ErrorMessage name="homePhoneNumber" component="div" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="emailAddress" className="control-label">Email Address</label>
+                                        <Field type="text" name="emailAddress" className="form-control" />
+                                        <ErrorMessage name="emailAddress" component="div" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="postalAddress" className="control-label">Postal Address</label>
+                                        <Field type="text" name="postalAddress" className="form-control" />
+                                        <ErrorMessage name="postalAddress" component="div" />
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="dateofFullMembership" className="control-label">Date of Full Membership </label>
+                                        <CustomDatePicker name="dateofFullMembership" className="form-control datepicker" />
+                                        <ErrorMessage name="dateofFullMembership" component="div" />
+                                    </div>
+
+                                    {/*<div className="form-group">
+                                        <label htmlFor="committees" className="control-label">Committees</label>
+                                        <CustomSelect name="committees" options={this.state.selectValues.committeeIds} isMulti="true" />
+                                    </div>*/}
+
+                                    <div className="form-group">
+                                        <label htmlFor="chapterId" className="control-label">Chapter</label>
+                                        <CustomSelect name="chapterId" options={this.state.selectValues.chapterIds} />
+
+                                    </div>
+                                    <div className="form-group">
+                                        <Button type="submit" className="btn btn-default">Save</Button>
+                                    </div>
+                                </Form>
                             </div>
                         </div>
+
                     )
                     }
 
