@@ -27,7 +27,7 @@ export class CreateMemberData extends Component {
     render() {
         return (
             <div>
-                <h4>Create Member</h4>
+                <h4>Add Member</h4>
                 <Formik
                     initialValues={{}}
                     validate={values => {
